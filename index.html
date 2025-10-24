@@ -403,7 +403,7 @@
             const saveBtn = document.getElementById('save-btn');
             // 'category' rimosso da questo oggetto
             const fields = {
-                name: document.getElementById('profile-name'),
+                nome: document.getElementById('profile-name'), // 'name' -> 'nome'
                 description: document.getElementById('profile-description'),
                 x_name: document.getElementById('profile-x-name'),
                 x_address: document.getElementById('profile-x-address'),
@@ -640,7 +640,7 @@
                     );
                 } else {
                     // Nome nuovo, passa allo Step 2
-                    fields.name.value = name;
+                    fields.nome.value = name; // 'fields.name' -> 'fields.nome'
                     step1Name.classList.add('hidden');
                     step2Details.classList.remove('hidden');
                 }
@@ -1397,4 +1397,5 @@
     </script>
 </body>
 </html>
+
 
