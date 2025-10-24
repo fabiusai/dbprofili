@@ -160,7 +160,6 @@
             <header class="mb-6 p-6 bg-white rounded-lg shadow-md flex justify-between items-center" style="border-left: 5px solid var(--colore-primario);">
                 <div>
                     <h1 class="text-3xl font-bold" style="color: var(--colore-primario);">Gestore Profili</h1>
-                    <!-- *** MODIFICA: Aggiunto v1.1 per verifica cache *** -->
                     <p class="text-gray-600">Database per profili social. (v1.1)</p>
                 </div>
                 <button id="add-profile-btn" class="btn-primario flex items-center space-x-2">
@@ -689,7 +688,7 @@
                             };
                             delete profiles[index].category; // Sicurezza
                         } else {
-                            // *** MODIFICA: Log di errore critico se l'ID non viene trovato ***
+                            // *** Log di errore critico se l'ID non viene trovato ***
                             console.error("ERRORE CRITICO: Impossibile trovare l'indice per l'ID di modifica:", editingProfileId, "Dati attuali:", profiles);
                             showAlert("Errore Grave", "Impossibile salvare. ID profilo non trovato. Resettare l'app o ricaricare la pagina.", "error");
                             resetButton(saveBtn);
