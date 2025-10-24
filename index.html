@@ -160,7 +160,7 @@
             <header class="mb-6 p-6 bg-white rounded-lg shadow-md flex justify-between items-center" style="border-left: 5px solid var(--colore-primario);">
                 <div>
                     <h1 class="text-3xl font-bold" style="color: var(--colore-primario);">Gestore Profili</h1>
-                    <p class="text-gray-600">Database per profili social. (v1.1)</p>
+                    <p class="text-gray-600">Database per profili social. (v1.2-fix)</p>
                 </div>
                 <button id="add-profile-btn" class="btn-primario flex items-center space-x-2">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -574,6 +574,10 @@
                     editingProfileId = profileId;
                     modalTitle.textContent = "Modifica Profilo";
                     
+                    // *** FIX: Disabilita il campo Step 1 per la validazione ***
+                    profileNameCheck.disabled = true;
+                    profileNameCheck.required = false;
+
                     // Popola i campi
                     for (const key in fields) {
                         if (fields[key] && profile[key] !== undefined) {
@@ -590,7 +594,7 @@
                     editingProfileId = null;
                     modalTitle.textContent = "Aggiungi Nuovo Profilo";
                     
-                    // Mostra solo lo step 1
+                    // Mostra solo lo step 1 (resetForm ha già abilitato profileNameCheck)
                     step1Name.classList.remove('hidden');
                     step2Details.classList.add('hidden');
                 }
@@ -615,6 +619,11 @@
                 profileForm.reset();
                 editingProfileId = null;
                 profileNameCheck.value = '';
+
+                // *** FIX: Riabilita il campo Step 1 per il prossimo "Aggiungi" ***
+                profileNameCheck.disabled = false;
+                profileNameCheck.required = true;
+                
                 // Resetta i campi readonly
                 if(fields.x_address) fields.x_address.value = '';
                 if(fields.tiktok_address) fields.tiktok_address.value = '';
@@ -658,6 +667,11 @@
                 } else {
                     // Nome nuovo, passa allo Step 2
                     fields.nome.value = name; 
+                    
+                    // *** FIX: Disabilita il campo Step 1 per la validazione ***
+                    profileNameCheck.disabled = true;
+                    profileNameCheck.required = false;
+
                     step1Name.classList.add('hidden');
                     step2Details.classList.remove('hidden');
                 }
@@ -688,11 +702,10 @@
                             };
                             delete profiles[index].category; // Sicurezza
                         } else {
-                            // *** Log di errore critico se l'ID non viene trovato ***
                             console.error("ERRORE CRITICO: Impossibile trovare l'indice per l'ID di modifica:", editingProfileId, "Dati attuali:", profiles);
                             showAlert("Errore Grave", "Impossibile salvare. ID profilo non trovato. Resettare l'app o ricaricare la pagina.", "error");
                             resetButton(saveBtn);
-                            return; // Interrompe l'esecuzione
+                            return; 
                         }
                     } else {
                         // --- Crea Nuovo Profilo ---
@@ -1253,7 +1266,7 @@
             }
             
             /**
-             * (NUOVO) Gestisce il reset dell'applicazione
+             * Gestisce il reset dell'applicazione
              */
             function handleResetApp() {
                 showConfirmation(
@@ -1354,7 +1367,8 @@
 
             function handleXNameChange(e) {
                 const name = e.target.value.trim().replace('@', '');
-                if (xAddressInput) xAddressInput.value = name ? `https://x.com/${name}` : '';
+                if (xAddressInput) xAddressInput.value = name ? `https:
+//x.com/${name}` : '';
             }
             
             function handleTikTokNameChange(e) {
