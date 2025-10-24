@@ -160,7 +160,8 @@
             <header class="mb-6 p-6 bg-white rounded-lg shadow-md flex justify-between items-center" style="border-left: 5px solid var(--colore-primario);">
                 <div>
                     <h1 class="text-3xl font-bold" style="color: var(--colore-primario);">Gestore Profili</h1>
-                    <p class="text-gray-600">Database per profili social.</p>
+                    <!-- *** MODIFICA: Aggiunto v1.1 per verifica cache *** -->
+                    <p class="text-gray-600">Database per profili social. (v1.1)</p>
                 </div>
                 <button id="add-profile-btn" class="btn-primario flex items-center space-x-2">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -511,7 +512,7 @@
              * Aggiunge tutti gli event listener dell'applicazione
              */
             function addEventListeners() {
-                // *** CORREZIONE BUG ***: Chiama openProfileModal(null) per un nuovo profilo
+                // Chiama openProfileModal(null) per un nuovo profilo
                 addProfileBtn.addEventListener('click', () => openProfileModal(null));
                 
                 closeModalBtn.addEventListener('click', closeProfileModal);
@@ -574,9 +575,6 @@
                     editingProfileId = profileId;
                     modalTitle.textContent = "Modifica Profilo";
                     
-                    // DEBUG
-                    console.log("Apertura modale MODIFICA. ID:", profileId, "Dati:", JSON.parse(JSON.stringify(profile)));
-
                     // Popola i campi
                     for (const key in fields) {
                         if (fields[key] && profile[key] !== undefined) {
@@ -681,9 +679,6 @@
                 }
 
                 try {
-                    // DEBUG
-                    console.log("Salvataggio in corso. ID:", editingProfileId, "Dati form:", JSON.parse(JSON.stringify(formData)));
-
                     if (editingProfileId) {
                         // --- Aggiorna Profilo Esistente ---
                         const index = profiles.findIndex(p => p.id === editingProfileId);
@@ -693,12 +688,12 @@
                                 ...formData 
                             };
                             delete profiles[index].category; // Sicurezza
-                            
-                            // DEBUG
-                            console.log("Profilo aggiornato nell'array:", JSON.parse(JSON.stringify(profiles[index])));
                         } else {
-                            // DEBUG
-                            console.error("ERRORE: Impossibile trovare l'indice per l'ID:", editingProfileId);
+                            // *** MODIFICA: Log di errore critico se l'ID non viene trovato ***
+                            console.error("ERRORE CRITICO: Impossibile trovare l'indice per l'ID di modifica:", editingProfileId, "Dati attuali:", profiles);
+                            showAlert("Errore Grave", "Impossibile salvare. ID profilo non trovato. Resettare l'app o ricaricare la pagina.", "error");
+                            resetButton(saveBtn);
+                            return; // Interrompe l'esecuzione
                         }
                     } else {
                         // --- Crea Nuovo Profilo ---
