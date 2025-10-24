@@ -511,7 +511,9 @@
              * Aggiunge tutti gli event listener dell'applicazione
              */
             function addEventListeners() {
-                addProfileBtn.addEventListener('click', openProfileModal);
+                // *** CORREZIONE BUG ***: Chiama openProfileModal(null) per un nuovo profilo
+                addProfileBtn.addEventListener('click', () => openProfileModal(null));
+                
                 closeModalBtn.addEventListener('click', closeProfileModal);
                 modalBackdrop.addEventListener('click', closeProfileModal);
                 cancelBtn.addEventListener('click', closeProfileModal);
