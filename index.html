@@ -192,12 +192,12 @@
                     <!-- Import JSON -->
                     <label class="btn-secondario cursor-pointer">
                         <span>Importa JSON</span>
-                        <input type="file" id="import-json-btn" class="hidden" accept=".json">
+                        <input type="file" id="import-json-btn" class="sr-only" accept=".json">
                     </label>
                     <!-- Import Excel -->
                     <label class="btn-secondario cursor-pointer">
                         <span>Importa Excel</span>
-                        <input type="file" id="import-excel-btn" class="hidden" accept=".xlsx, .xls">
+                        <input type="file" id="import-excel-btn" class="sr-only" accept=".xlsx, .xls">
                     </label>
                     <!-- Export -->
                     <button id="export-json-btn" class="btn-secondario">Esporta DB (JSON)</button>
@@ -557,6 +557,9 @@
                     editingProfileId = profileId;
                     modalTitle.textContent = "Modifica Profilo";
                     
+                    // DEBUG: Log del profilo che stiamo aprendo
+                    console.log("Apertura modale MODIFICA. ID:", profileId, "Dati:", JSON.parse(JSON.stringify(profile)));
+
                     // Popola i campi
                     for (const key in fields) {
                         if (fields[key]) {
@@ -663,6 +666,9 @@
                 }
 
                 try {
+                    // DEBUG: Log dei dati del form prima di salvare
+                    console.log("Salvataggio in corso. ID:", editingProfileId, "Dati form:", JSON.parse(JSON.stringify(formData)));
+
                     if (editingProfileId) {
                         // --- Aggiorna Profilo Esistente ---
                         const index = profiles.findIndex(p => p.id === editingProfileId);
@@ -672,6 +678,12 @@
                                 ...formData 
                             };
                             delete profiles[index].category; // Rimuove 'category' se ancora presente
+                            
+                            // DEBUG: Log dello stato del profilo DOPO il salvataggio
+                            console.log("Profilo aggiornato nell'array:", JSON.parse(JSON.stringify(profiles[index])));
+                        } else {
+                            // DEBUG: Errore, indice non trovato
+                            console.error("ERRORE: Impossibile trovare l'indice per l'ID:", editingProfileId);
                         }
                     } else {
                         // --- Crea Nuovo Profilo ---
@@ -1397,5 +1409,7 @@
     </script>
 </body>
 </html>
+
+
 
 
